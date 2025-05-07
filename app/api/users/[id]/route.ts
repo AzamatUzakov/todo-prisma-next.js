@@ -1,8 +1,11 @@
-import { NextResponse } from "next/server";
+// app/api/users/[id]/route.ts
+
+import { NextResponse, type NextRequest } from "next/server";
 import prisma from "@/lib/prisma";
 
+// 👇 Правильная сигнатура
 export async function DELETE(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   const userId = parseInt(params.id);
@@ -21,10 +24,11 @@ export async function DELETE(
     return NextResponse.json({ error: "Ошибка удаления" }, { status: 500 });
   }
 }
-// app/api/users/[id]/route.ts
 
-
-export async function PATCH(req: Request, { params }: { params: { id: string } }) {
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   const userId = parseInt(params.id);
   const body = await req.json();
 
@@ -33,7 +37,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
       where: { id: userId },
       data: {
         name: body.name,
-        email: body.email,
+        email: body.email, 
       },
     });
 
@@ -43,6 +47,3 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
     return NextResponse.json({ error: "Ошибка обновления" }, { status: 500 });
   }
 }
-
-
-
